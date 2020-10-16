@@ -35,6 +35,9 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   Route::post('signin', 'SignInController');
   Route::post('signout', 'SignOutController');
 
+  Route::post('email/resend', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+  });
   // Route::get('email/verify/{numbers}', 'ApiVerificationController@verify')->name('verificationapi.verify');
   // Route::get('email/resend', 'ApiVerificationController@resend')->name('verificationapi.resend');
 });

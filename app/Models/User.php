@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Traits\WithMediaConversion;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use App\Notifications\ApiResetPasswordNotification;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
   use HasFactory, Notifiable, CanResetPassword, InteractsWithMedia, WithMediaConversion;
 
@@ -73,9 +74,10 @@ class User extends Authenticatable implements HasMedia
     $this->notify(new ApiResetPasswordNotification($token));
   }
 
-  // public function sendEmailVerificationNotification(){
-
-  // }
+  public function sendEmailVerificationNotification()
+  {
+    $this->notify(new VerifyEmail());
+  }
 
   //Password Attribute
   public function setPasswordAttribute($password)
