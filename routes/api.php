@@ -26,6 +26,10 @@ Route::get('sanctum/csrf-cookie', function () {
   return redirect('sanctum/csrf-cookie');
 });
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+  return new UserResource($request->user());
+});
+
 Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   Route::post('signup', 'SignUpController');
   Route::post('signin', 'SignInController');
@@ -35,6 +39,15 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   // Route::get('email/resend', 'ApiVerificationController@resend')->name('verificationapi.resend');
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-  return new UserResource($request->user());
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'users', 'namespace' => 'Users'], function () {
+  Route::get('{user}', 'UserController@show');
+  Route::patch('{user}', 'UserController@update');
+  Route::patch('{user}/profile', 'UserController@updateProfile');
+  Route::patch('{user}/password', 'UserController@updatePassword');
+  Route::post('{user}/avatar', 'UserController@avatar');
+});
+
+Route::group(['prefix' => 'media', 'namespace' => 'Media'], function () {
+  Route::get('config', 'MediaConfigController@index');
 });

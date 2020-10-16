@@ -3,17 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Traits\WithMediaConversion;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use App\Notifications\ApiResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-  use HasFactory, Notifiable, CanResetPassword;
+  use HasFactory, Notifiable, CanResetPassword, InteractsWithMedia, WithMediaConversion;
 
   /**
    * The attributes that are mass assignable.
@@ -44,6 +48,8 @@ class User extends Authenticatable
   protected $casts = [
     'email_verified_at' => 'datetime',
   ];
+
+  public static $mediaCollectionName = "avatars";
 
   public static function boot()
   {
@@ -87,6 +93,11 @@ class User extends Authenticatable
 
   public function avatar()
   {
-    return null;
+    return $this->getMedia(self::$mediaCollectionName)->first();
+  }
+
+  public function registerMediaConversions(?Media $media = null): void
+  {
+    $this->thumbnail();
   }
 }
