@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes([
+  'register' => false,
+  'verify' => true,
+  'reset' => true
+]);
+
+Route::get('sanctum/csrf-cookie', function () {
+  return redirect('sanctum/csrf-cookie');
+});
+
+Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+  Route::post('signup', 'SignUpController');
+  Route::post('signin', 'SignInController');
+  Route::post('signout', 'SignOutController');
+
+  // Route::get('email/verify/{numbers}', 'ApiVerificationController@verify')->name('verificationapi.verify');
+  // Route::get('email/resend', 'ApiVerificationController@resend')->name('verificationapi.resend');
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-  return $request->user();
+  return new UserResource($request->user());
 });

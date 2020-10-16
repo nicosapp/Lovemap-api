@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes([
   'register' => false,
   'verify' => true,
-  'reset' => false
+  'reset' => true
 ]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

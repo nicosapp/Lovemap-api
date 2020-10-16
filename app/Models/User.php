@@ -6,12 +6,14 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use App\Notifications\ApiResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-  use HasFactory, Notifiable;
+  use HasFactory, Notifiable, CanResetPassword;
 
   /**
    * The attributes that are mass assignable.
@@ -60,6 +62,15 @@ class User extends Authenticatable
     return 'uuid';
   }
 
+  public function sendPasswordResetNotification($token)
+  {
+    $this->notify(new ApiResetPasswordNotification($token));
+  }
+
+  // public function sendEmailVerificationNotification(){
+
+  // }
+
   //Password Attribute
   public function setPasswordAttribute($password)
   {
@@ -72,5 +83,10 @@ class User extends Authenticatable
   public function infos()
   {
     return $this->hasOne(UserInfo::class);
+  }
+
+  public function avatar()
+  {
+    return null;
   }
 }
