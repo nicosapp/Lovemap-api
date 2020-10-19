@@ -22,24 +22,16 @@ Auth::routes([
   'reset' => true
 ]);
 
-Route::get('sanctum/csrf-cookie', function () {
-  return redirect('sanctum/csrf-cookie');
-});
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return new UserResource($request->user());
 });
 
 Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   Route::post('signup', 'SignUpController');
-  Route::post('signin', 'SignInController');
-  Route::post('signout', 'SignOutController');
-
-  Route::post('email/resend', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-  });
-  // Route::get('email/verify/{numbers}', 'ApiVerificationController@verify')->name('verificationapi.verify');
-  // Route::get('email/resend', 'ApiVerificationController@resend')->name('verificationapi.resend');
+  // Route::post('signin', 'SignInController');
+  // Route::post('signout', 'SignOutController');
+  Route::get('signin/{service}', 'SocialLoginController@redirect');
+  Route::get('signin/{service}/callback', 'SocialLoginController@callback');
 });
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,8 @@ Auth::routes([
   'verify' => true,
   'reset' => true
 ]);
+
+Route::get('login/{service}', 'Auth\SocialLoginController@redirect');
+Route::get('login/{service}/callback', 'Auth\SocialLoginController@callback');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

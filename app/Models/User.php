@@ -102,4 +102,14 @@ class User extends Authenticatable implements HasMedia
   {
     $this->thumbnail();
   }
+
+  public function social()
+  {
+    return $this->hasMany(UserSocial::class);
+  }
+
+  public function hasSocialLinked($service)
+  {
+    return (bool) $this->social->where('service', $service)->count();
+  }
 }

@@ -19,9 +19,11 @@ class UserResource extends JsonResource
       'email' => $this->email,
       'name' => $this->name,
       'uuid' => $this->uuid,
+      'social' => optional($this->social())->first()->service,
       'is_verified' => $this->hasVerifiedEmail(),
       'created_at' => $this->created_at,
       'avatar' => $this->when($this->avatar(), new MediaResource($this->avatar())),
+
       $this->mergeWhen(
         $this->infos()->exists(),
         [
