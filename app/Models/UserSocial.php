@@ -20,7 +20,7 @@ class UserSocial extends Model
     parent::boot();
 
     static::created(function (UserSocial $userSocial) {
-      Mail::to($userSocial->user)->send(new SocialAccountLinked($userSocial->user));
+      Mail::to($userSocial->user)->send(new SocialAccountLinked($userSocial->user, $userSocial));
     });
   }
   public function user()

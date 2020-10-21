@@ -3,6 +3,7 @@
 namespace App\Mail\Social;
 
 use App\Models\User;
+use App\Models\UserSocial;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -12,15 +13,19 @@ class SocialAccountLinked extends Mailable
 {
   use Queueable, SerializesModels;
 
+  public $theme = 'email';
+
   public $user;
+  public $social;
   /**
    * Create a new message instance.
    *
    * @return void
    */
-  public function __construct(User $user)
+  public function __construct(User $user, UserSocial $social)
   {
     $this->user = $user;
+    $this->social = $social;
   }
 
   /**
@@ -30,6 +35,12 @@ class SocialAccountLinked extends Mailable
    */
   public function build()
   {
-    return $this->subject('Social account linked')->view('email.social.social_linked');
+    return $this->subject('Social account linked')
+      ->with([
+        'introLines' => [
+          'Your __' . config("social.services.{$this->social->service}.name", 'Social') . '__ account is now linked!'
+        ]
+      ])
+      ->markdown('email.mail');
   }
 }
