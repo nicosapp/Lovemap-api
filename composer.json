@@ -15,6 +15,7 @@
         "laravel/framework": "^8.0",
         "laravel/sanctum": "^2.6",
         "laravel/socialite": "^5.0",
+        "laravel/telescope": "^4.3",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "spatie/laravel-medialibrary": "^8.10"
