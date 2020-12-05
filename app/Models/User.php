@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Chats\Chat;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\Hash;
@@ -29,6 +30,7 @@ class User extends Authenticatable implements HasMedia
     'name',
     'email',
     'password',
+    'online_at',
   ];
 
   /**
@@ -69,10 +71,10 @@ class User extends Authenticatable implements HasMedia
     return 'uuid';
   }
 
-  public function sendPasswordResetNotification($token)
-  {
-    $this->notify(new ApiResetPasswordNotification($token));
-  }
+  // public function sendPasswordResetNotification($token)
+  // {
+  //   $this->notify(new ApiResetPasswordNotification($token));
+  // }
 
   // public function sendEmailVerificationNotification()
   // {
@@ -111,5 +113,29 @@ class User extends Authenticatable implements HasMedia
   public function hasSocialLinked($service)
   {
     return (bool) $this->social->where('service', $service)->count();
+  }
+
+  public function locations()
+  {
+    return $this->hasMany(Location::class);
+  }
+
+  public function chats()
+  {
+    return Chat::where('members', 'LIKE', "%{$this->id}%");
+  }
+
+  public function scopeOnline($query)
+  {
+    return $query->whereNotNull('online_at');
+  }
+
+  public function toggleOnline($online = false)
+  {
+    if ($online) {
+      $this->update(['online_at' => now()]);
+    } else {
+      $this->update(['online_at' => null]);
+    }
   }
 }

@@ -18,7 +18,7 @@ class MediaResource extends JsonResource
       'id' => $this->id,
       'name' => $this->name,
       'url' => $this->getFullUrl(),
-      'thumbnail_url' => $this->when($this->getUrl('thumbnail'), $this->getUrl('thumbnail')),
+      'thumbnail_url' => $this->when(optional($this->getUrl('thumbnail')), $this->getUrl('thumbnail')),
       'mime_type' => $this->mime_type,
       'created_at' => $this->created_at,
       'size' => $this->size,

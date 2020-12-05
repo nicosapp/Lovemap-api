@@ -22,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
     ],
     GitHubAccountWasLinked::class => [
       SendGitHubLinkedEmail::class
+    ],
+    'Illuminate\Auth\Events\Login' => [
+      'App\Listeners\LoginSuccess'
+    ],
+    'Illuminate\Auth\Events\Logout' => [
+      'App\Listeners\LogoutSuccess'
     ]
   ];
 
