@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Chats\Chat;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
@@ -19,7 +20,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements HasMedia
 {
-  use HasFactory, Notifiable, CanResetPassword, InteractsWithMedia, WithMediaConversion;
+  use HasFactory, Notifiable, CanResetPassword, InteractsWithMedia, WithMediaConversion, HasApiTokens;
 
   /**
    * The attributes that are mass assignable.

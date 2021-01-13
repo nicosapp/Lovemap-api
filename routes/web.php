@@ -29,6 +29,9 @@ Route::get('login/{service}/callback', 'Auth\SocialLoginController@callback');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/', function () {
+  return ['test' => 'it works'];
+});
 // Route::get('send', function () {
 //   $user = User::where('id', 8)->first();
 //   Mail::to($user)->send(new SocialAccountLinked($user, $user->social()->first()));

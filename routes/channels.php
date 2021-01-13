@@ -27,6 +27,7 @@ Broadcast::channel('chat.{id}', function ($user, $id) {
   // return true;
 });
 
-Broadcast::channel('user.{id}.chats.updated', function ($user) {
+Broadcast::channel('users.{id}.chats.updated', function ($user) {
   return Auth::check();
+  // return true
 });

@@ -13,6 +13,11 @@ class Message extends Model
 {
   use HasFactory;
 
+  protected $dates = [
+    'updated_at',
+    'created_at'
+  ];
+
   public static $pagination = 30;
 
   protected $guarded = [];

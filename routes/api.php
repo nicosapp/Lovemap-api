@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
+Route::get('test', function () {
+  return User::find(1);
+});
+
 Auth::routes([
   'register' => false,
   'verify' => true,
@@ -33,6 +38,10 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   Route::post('signup', 'SignUpController');
   Route::get('signin/{service}', 'SocialLoginController@redirect');
   Route::get('signin/{service}/callback', 'SocialLoginController@callback');
+  Route::group(['prefix' => '', 'namespace' => 'Api'], function () {
+    Route::post('signin', 'SignInController@login');
+    Route::post('signout', 'SignInController@logout');
+  });
 });
 
 
